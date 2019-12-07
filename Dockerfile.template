@@ -1,0 +1,19 @@
+#FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:buster-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-alpine
+
+#RUN apt-get update && apt-get install -y --no-install-recommends \
+#  gpsd \
+#  chrony \
+#  && apt-get clean
+
+RUN apk add --no-cache \
+  gpsd \
+  chrony
+
+WORKDIR /usr/src
+COPY chrony.conf /etc/chrony
+COPY start.sh /usr/src
+
+ENV UDEV on
+
+CMD ["./start.sh"]
